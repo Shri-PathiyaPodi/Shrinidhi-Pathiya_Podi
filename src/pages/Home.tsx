@@ -64,7 +64,7 @@ const Home: React.FC = () => {
             </div>
             <div className="relative">
               <img
-                src="https://images.pexels.com/photos/4198019/pexels-photo-4198019.jpeg?auto=compress&cs=tinysrgb&w=800"
+                src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=800"
                 alt="Traditional Indian spices and powders"
                 className="rounded-2xl shadow-2xl"
               />
@@ -130,12 +130,12 @@ const Home: React.FC = () => {
                 ஶ்ரீநிதி பத்திய பொடி-இல், பாரம்பரிய சமையலின் சுவையும் சத்தும் நிறைந்த உணவுப் பொடிகளை வீட்டிலேயே தயாரித்து வழங்குகிறோம்.
               </p>
               <button className="bg-white text-orange-600 hover:bg-gray-100 px-8 py-3 rounded-lg font-semibold transition-colors">
-                Read Our Story
+                <a href="#about">Read Our Story</a>
               </button>
             </div>
             <div>
               <img
-                src="https://images.pexels.com/photos/4198017/pexels-photo-4198017.jpeg?auto=compress&cs=tinysrgb&w=800"
+                src="https://images.pexels.com/photos/1435904/pexels-photo-1435904.jpeg?auto=compress&cs=tinysrgb&w=800"
                 alt="Traditional Indian family preparing healthy food"
                 className="rounded-2xl shadow-2xl"
               />
@@ -180,7 +180,7 @@ const Home: React.FC = () => {
               Chat on WhatsApp
             </button>
             <button className="border-2 border-white text-white hover:bg-white hover:text-gray-900 px-8 py-4 rounded-lg font-semibold text-lg transition-colors">
-              View All Products
+              <a href="#products">View All Products</a>
             </button>
           </div>
         </div>

@@ -60,11 +60,11 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              <li><a href="#" className="text-gray-300 hover:text-orange-400 transition-colors">Home</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-orange-400 transition-colors">Products</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-orange-400 transition-colors">About Us</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-orange-400 transition-colors">Blog</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-orange-400 transition-colors">Contact</a></li>
+              <li><button onClick={() => window.location.href = '#home'} className="text-gray-300 hover:text-orange-400 transition-colors">Home</button></li>
+              <li><button onClick={() => window.location.href = '#products'} className="text-gray-300 hover:text-orange-400 transition-colors">Products</button></li>
+              <li><button onClick={() => window.location.href = '#about'} className="text-gray-300 hover:text-orange-400 transition-colors">About Us</button></li>
+              <li><button onClick={() => window.location.href = '#blog'} className="text-gray-300 hover:text-orange-400 transition-colors">Blog</button></li>
+              <li><button onClick={() => window.location.href = '#contact'} className="text-gray-300 hover:text-orange-400 transition-colors">Contact</button></li>
             </ul>
           </div>
 

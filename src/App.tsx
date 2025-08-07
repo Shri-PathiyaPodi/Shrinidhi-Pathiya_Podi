@@ -10,6 +10,26 @@ import Contact from './pages/Contact';
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
 
+  // Handle navigation from hash changes
+  React.useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash && ['home', 'products', 'about', 'blog', 'contact'].includes(hash)) {
+        setCurrentPage(hash);
+      }
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    handleHashChange(); // Check initial hash
+
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  const handlePageChange = (page: string) => {
+    setCurrentPage(page);
+    window.location.hash = page;
+  };
+
   const renderPage = () => {
     switch (currentPage) {
       case 'home':
@@ -29,7 +49,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Header currentPage={currentPage} onPageChange={setCurrentPage} />
+      <Header currentPage={currentPage} onPageChange={handlePageChange} />
       <main>
         {renderPage()}
       </main>

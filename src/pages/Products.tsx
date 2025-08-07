@@ -14,6 +14,7 @@ const Products: React.FC = () => {
       description: "Traditional bone health powder made from Pirandai (Cissus quadrangularis)",
       benefits: ["Strengthens bones", "Aids digestion", "Natural calcium source"],
       image: "https://images.pexels.com/photos/4198019/pexels-photo-4198019.jpeg?auto=compress&cs=tinysrgb&w=400",
+      image: "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=400",
       price: "₹250",
       weight: "100g"
     },
@@ -23,6 +24,7 @@ const Products: React.FC = () => {
       description: "Nutrient-rich drumstick leaves powder packed with vitamins and minerals",
       benefits: ["Rich in iron", "Boosts immunity", "Natural detox"],
       image: "https://images.pexels.com/photos/4198017/pexels-photo-4198017.jpeg?auto=compress&cs=tinysrgb&w=400",
+      image: "https://images.pexels.com/photos/1435904/pexels-photo-1435904.jpeg?auto=compress&cs=tinysrgb&w=400",
       price: "₹200",
       weight: "100g"
     },
@@ -32,6 +34,7 @@ const Products: React.FC = () => {
       description: "Black sesame powder perfect for idli, dosa, and rice",
       benefits: ["Rich in calcium", "Healthy fats", "Traditional taste"],
       image: "https://images.pexels.com/photos/4198020/pexels-photo-4198020.jpeg?auto=compress&cs=tinysrgb&w=400",
+      image: "https://images.pexels.com/photos/1435895/pexels-photo-1435895.jpeg?auto=compress&cs=tinysrgb&w=400",
       price: "₹180",
       weight: "150g"
     },
@@ -41,6 +44,7 @@ const Products: React.FC = () => {
       description: "Special blend for new mothers with traditional herbs and nutrients",
       benefits: ["Postpartum recovery", "Energy boost", "Lactation support"],
       image: "https://images.pexels.com/photos/4198021/pexels-photo-4198021.jpeg?auto=compress&cs=tinysrgb&w=400",
+      image: "https://images.pexels.com/photos/1435901/pexels-photo-1435901.jpeg?auto=compress&cs=tinysrgb&w=400",
       price: "₹350",
       weight: "200g"
     },
@@ -50,6 +54,7 @@ const Products: React.FC = () => {
       description: "Powerful blend of traditional herbs to strengthen your immune system",
       benefits: ["Boosts immunity", "Antioxidant rich", "Natural healing"],
       image: "https://images.pexels.com/photos/4198022/pexels-photo-4198022.jpeg?auto=compress&cs=tinysrgb&w=400",
+      image: "https://images.pexels.com/photos/1640774/pexels-photo-1640774.jpeg?auto=compress&cs=tinysrgb&w=400",
       price: "₹300",
       weight: "150g"
     },
@@ -59,6 +64,7 @@ const Products: React.FC = () => {
       description: "Traditional spice blend to aid digestion and gut health",
       benefits: ["Aids digestion", "Reduces bloating", "Gut health"],
       image: "https://images.pexels.com/photos/4198023/pexels-photo-4198023.jpeg?auto=compress&cs=tinysrgb&w=400",
+      image: "https://images.pexels.com/photos/1435907/pexels-photo-1435907.jpeg?auto=compress&cs=tinysrgb&w=400",
       price: "₹220",
       weight: "100g"
     }
