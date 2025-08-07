@@ -64,7 +64,7 @@ const Home: React.FC = () => {
             </div>
             <div className="relative">
               <img
-                src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=800"
+                src="https://images.pexels.com/photos/4198019/pexels-photo-4198019.jpeg?auto=compress&cs=tinysrgb&w=800"
                 alt="Traditional Indian spices and powders"
                 className="rounded-2xl shadow-2xl"
               />
@@ -135,7 +135,7 @@ const Home: React.FC = () => {
             </div>
             <div>
               <img
-                src="https://images.pexels.com/photos/1435904/pexels-photo-1435904.jpeg?auto=compress&cs=tinysrgb&w=800"
+                src="https://images.pexels.com/photos/4110256/pexels-photo-4110256.jpeg?auto=compress&cs=tinysrgb&w=800"
                 alt="Traditional Indian family preparing healthy food"
                 className="rounded-2xl shadow-2xl"
               />
