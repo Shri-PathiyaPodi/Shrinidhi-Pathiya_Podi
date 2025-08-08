@@ -20,16 +20,48 @@ const Contact: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log('Form submitted:', formData);
-    alert('Thank you for your message! We will get back to you within 24 hours.');
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      subject: '',
-      message: ''
-    });
+    
+    // Create mailto link with form data
+    const subject = encodeURIComponent(`${formData.subject} - Contact Form Submission`);
+    const body = encodeURIComponent(
+      `Name: ${formData.name}\n` +
+      `Email: ${formData.email}\n` +
+      `Phone: ${formData.phone || 'Not provided'}\n` +
+      `Subject: ${formData.subject}\n\n` +
+      `Message:\n${formData.message}\n\n` +
+      `---\nSent from Shrinidhi Pathiya Podi website contact form`
+    );
+    
+    const mailtoLink = `mailto:info@shrinidhipathiyapodi.com?subject=${subject}&body=${body}`;
+    
+    // Try to open email client
+    try {
+      window.location.href = mailtoLink;
+      
+      // Show success message after a short delay
+      setTimeout(() => {
+        alert('Your email client should have opened with the message. If not, please send an email directly to info@shrinidhipathiyapodi.com');
+        
+        // Reset form
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          subject: '',
+          message: ''
+        });
+      }, 1000);
+      
+    } catch (error) {
+      // Fallback: copy email to clipboard and show instructions
+      const emailContent = `To: info@shrinidhipathiyapodi.com\nSubject: ${formData.subject} - Contact Form Submission\n\nName: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone || 'Not provided'}\nSubject: ${formData.subject}\n\nMessage:\n${formData.message}`;
+      
+      navigator.clipboard.writeText(emailContent).then(() => {
+        alert('Email content copied to clipboard! Please paste it in your email client and send to info@shrinidhipathiyapodi.com');
+      }).catch(() => {
+        alert('Please send an email directly to info@shrinidhipathiyapodi.com with your message.');
+      });
+    }
   };
 
   const handleWhatsApp = () => {
@@ -220,8 +252,21 @@ const Contact: React.FC = () => {
                   className="w-full bg-orange-600 hover:bg-orange-700 text-white py-4 px-6 rounded-lg font-semibold text-lg transition-colors flex items-center justify-center"
                 >
                   <Send className="w-5 h-5 mr-2" />
-                  Send Message
+                  Send Email
                 </button>
+                
+                <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+                  <p className="text-sm text-blue-700">
+                    <strong>Note:</strong> Clicking "Send Email" will open your default email client with the message pre-filled. 
+                    If you prefer, you can also email us directly at{' '}
+                    <a 
+                      href="mailto:info@shrinidhipathiyapodi.com" 
+                      className="font-semibold underline hover:text-blue-800"
+                    >
+                      info@shrinidhipathiyapodi.com
+                    </a>
+                  </p>
+                </div>
               </form>
             </div>
           </div>
