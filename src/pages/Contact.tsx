@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Phone, Mail, MapPin, MessageCircle, Clock, Send } from 'lucide-react';
+import { Phone, Mail, MapPin, MessageCircle, Clock, Send, CheckCircle, AlertCircle } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +11,10 @@ const Contact: React.FC = () => {
     message: ''
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [statusMessage, setStatusMessage] = useState('');
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -18,49 +23,46 @@ const Contact: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Create mailto link with form data
-    const subject = encodeURIComponent(`${formData.subject} - Contact Form Submission`);
-    const body = encodeURIComponent(
-      `Name: ${formData.name}\n` +
-      `Email: ${formData.email}\n` +
-      `Phone: ${formData.phone || 'Not provided'}\n` +
-      `Subject: ${formData.subject}\n\n` +
-      `Message:\n${formData.message}\n\n` +
-      `---\nSent from Shrinidhi Pathiya Podi website contact form`
-    );
-    
-    const mailtoLink = `mailto:info@shrinidhipathiyapodi.com?subject=${subject}&body=${body}`;
-    
-    // Try to open email client
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
     try {
-      window.location.href = mailtoLink;
+      // EmailJS configuration
+      const serviceId = 'service_shrinidhi'; // You'll need to replace this
+      const templateId = 'template_contact'; // You'll need to replace this
+      const publicKey = 'YOUR_PUBLIC_KEY'; // You'll need to replace this
+
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        phone: formData.phone || 'Not provided',
+        subject: formData.subject,
+        message: formData.message,
+        to_email: 'info@shrinidhipathiyapodi.com'
+      };
+
+      await emailjs.send(serviceId, templateId, templateParams, publicKey);
+
+      setSubmitStatus('success');
+      setStatusMessage('Thank you! Your message has been sent successfully. We\'ll get back to you within 24 hours.');
       
-      // Show success message after a short delay
-      setTimeout(() => {
-        alert('Your email client should have opened with the message. If not, please send an email directly to info@shrinidhipathiyapodi.com');
-        
-        // Reset form
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          subject: '',
-          message: ''
-        });
-      }, 1000);
-      
-    } catch (error) {
-      // Fallback: copy email to clipboard and show instructions
-      const emailContent = `To: info@shrinidhipathiyapodi.com\nSubject: ${formData.subject} - Contact Form Submission\n\nName: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone || 'Not provided'}\nSubject: ${formData.subject}\n\nMessage:\n${formData.message}`;
-      
-      navigator.clipboard.writeText(emailContent).then(() => {
-        alert('Email content copied to clipboard! Please paste it in your email client and send to info@shrinidhipathiyapodi.com');
-      }).catch(() => {
-        alert('Please send an email directly to info@shrinidhipathiyapodi.com with your message.');
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: ''
       });
+
+    } catch (error) {
+      console.error('Email sending failed:', error);
+      setSubmitStatus('error');
+      setStatusMessage('Sorry, there was an error sending your message. Please try again or contact us directly via WhatsApp or phone.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -159,6 +161,22 @@ const Contact: React.FC = () => {
           <div className="lg:col-span-2">
             <div className="bg-white rounded-2xl shadow-lg p-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Send us a Message</h2>
+              
+              {/* Status Messages */}
+              {submitStatus === 'success' && (
+                <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-start">
+                  <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
+                  <p className="text-green-700">{statusMessage}</p>
+                </div>
+              )}
+
+              {submitStatus === 'error' && (
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start">
+                  <AlertCircle className="w-5 h-5 text-red-600 mr-3 mt-0.5 flex-shrink-0" />
+                  <p className="text-red-700">{statusMessage}</p>
+                </div>
+              )}
+
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
@@ -172,7 +190,8 @@ const Contact: React.FC = () => {
                       value={formData.name}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors"
+                      disabled={isSubmitting}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed"
                       placeholder="Enter your full name"
                     />
                   </div>
@@ -187,7 +206,8 @@ const Contact: React.FC = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors"
+                      disabled={isSubmitting}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed"
                       placeholder="Enter your email"
                     />
                   </div>
@@ -204,7 +224,8 @@ const Contact: React.FC = () => {
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors"
+                      disabled={isSubmitting}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed"
                       placeholder="Enter your phone number"
                     />
                   </div>
@@ -218,7 +239,8 @@ const Contact: React.FC = () => {
                       value={formData.subject}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors"
+                      disabled={isSubmitting}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed"
                     >
                       <option value="">Select a subject</option>
                       <option value="product-inquiry">Product Inquiry</option>
@@ -241,33 +263,48 @@ const Contact: React.FC = () => {
                     value={formData.message}
                     onChange={handleInputChange}
                     required
+                    disabled={isSubmitting}
                     rows={6}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors resize-none"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors resize-none disabled:bg-gray-100 disabled:cursor-not-allowed"
                     placeholder="Tell us about your requirements, questions, or feedback..."
                   ></textarea>
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-orange-600 hover:bg-orange-700 text-white py-4 px-6 rounded-lg font-semibold text-lg transition-colors flex items-center justify-center"
+                  disabled={isSubmitting}
+                  className="w-full bg-orange-600 hover:bg-orange-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white py-4 px-6 rounded-lg font-semibold text-lg transition-colors flex items-center justify-center"
                 >
-                  <Send className="w-5 h-5 mr-2" />
-                  Send Email
+                  {isSubmitting ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-5 h-5 mr-2" />
+                      Send Message
+                    </>
+                  )}
                 </button>
-                
-                <div className="mt-4 p-4 bg-blue-50 rounded-lg">
-                  <p className="text-sm text-blue-700">
-                    <strong>Note:</strong> Clicking "Send Email" will open your default email client with the message pre-filled. 
-                    If you prefer, you can also email us directly at{' '}
-                    <a 
-                      href="mailto:info@shrinidhipathiyapodi.com" 
-                      className="font-semibold underline hover:text-blue-800"
-                    >
-                      info@shrinidhipathiyapodi.com
-                    </a>
-                  </p>
-                </div>
               </form>
+
+              {/* Setup Instructions */}
+              <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+                <h3 className="font-semibold text-blue-900 mb-2">📧 Email Service Setup Required</h3>
+                <p className="text-sm text-blue-700 mb-2">
+                  To enable direct email sending, you need to set up EmailJS:
+                </p>
+                <ol className="text-sm text-blue-700 space-y-1 ml-4">
+                  <li>1. Create a free account at <a href="https://emailjs.com" target="_blank" rel="noopener noreferrer" className="underline font-medium">emailjs.com</a></li>
+                  <li>2. Set up an email service (Gmail, Outlook, etc.)</li>
+                  <li>3. Create an email template</li>
+                  <li>4. Replace the placeholder keys in the code with your actual EmailJS keys</li>
+                </ol>
+                <p className="text-xs text-blue-600 mt-2">
+                  Until setup is complete, users can still contact you via WhatsApp or direct email.
+                </p>
+              </div>
             </div>
           </div>
         </div>
